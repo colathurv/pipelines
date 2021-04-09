@@ -26,15 +26,18 @@ pipelines:
       - name: {{ .Values.Step1.name }}
         type: MvnBuild
         configuration:
-          sourceLocation: {{ .Values.GitRepo.path }}
+          sourceLocation: SUV-204-CI-CD-Deep-Dive:JFrog-Pipelines/java-backend
           mvnCommand: clean install -ntp
-          configFileLocation: .
-          configFileName: mvn-art-config
+          environmentVariables:
+            JFROG_CLI_BUILD_NAME: backend-build
+          resolverSnapshotRepo: libs-snapshot-virtual
+          resolverReleaseRepo: libs-staging-virtual  
+          deployerSnapshotRepo: libs-snapshot-local
+          deployerReleaseRepo: libs-staging-local
           inputResources:
-            - name: {{ .Values.GitRepo.name }}
-              trigger: false
+            - name: be_gitRepo
           integrations:
-            - name: {{ .Values.Artifactory }}
+            - name: ARTFY_INT
           runtime:
             type: image
             image:
@@ -46,14 +49,12 @@ pipelines:
           onStart:
             - javac -version
             - mvn --version
-            #- add_pipeline_variables previous_backend_ver=${my_env_var}
-            - sed -ie 's/Default-Server/ArtifactoryUnified/g' $res_PetClinicGitRepo_resourcePath/{{ .Values.GitRepo.path }}/mvn-art-config
-            #- sed -ie "s/2.3.1/$my_env_var/g" $res_PetClinicGitRepo_resourcePath/spring-petclinic-customers-service/pom.xml
           onComplete:
             - echo $run_var
             - echo "Running $pipeline_name | $step_name on node ID $step_node_id"
           onSuccess:
             - rm -r ${steplet_run_state_dir}/jfrog
+      
       - name: {{ .Values.Step2.name }}
         type: DockerBuild
         configuration:
@@ -74,11 +75,10 @@ pipelines:
         execution:
           onStart:
             - sed -i "s/docker.artifactory/docker.artifactory-unified.soleng-us.jfrog.team/" $res_PetClinicGitRepo_resourcePath/{{ .Values.GitRepo.path }}/Dockerfile
-            #- sed -i "s/artifactory-unified.soleng-us.jfrog.team/${ArtIP}/" $res_PetClinicGitRepo_resourcePath/Samples/pet-clinic-project/spring-petclinic-microservices/spring-petclinic-config-server/Dockerfile
-            #- sed -i "s/1.0.0/$previous_backend_ver/g" $res_PetClinicGitRepo_resourcePath/Dockerfile
           onComplete:
             - echo $step_env_var2
             - echo "Running $pipeline_name | $step_name on node ID $step_node_id"
+      
       - name: {{ .Values.Step3.name }}
         type: DockerPush
         configuration:
