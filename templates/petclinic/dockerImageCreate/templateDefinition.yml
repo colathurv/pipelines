@@ -20,13 +20,14 @@ resources:
       path: {{ .Values.Resource3.path }}
       branches:
         include: {{ .Values.Resource3.branch }}
+
 pipelines:
   - name: {{ .Values.Pipelines.name }}
     steps:
       - name: {{ .Values.Step1.name }}
         type: MvnBuild
         configuration:
-          sourceLocation: SUV-204-CI-CD-Deep-Dive:JFrog-Pipelines/java-backend
+          sourceLocation: {{ .Values.GitRepo.path }}
           mvnCommand: clean install -ntp
           environmentVariables:
             JFROG_CLI_BUILD_NAME: backend-build
@@ -35,9 +36,9 @@ pipelines:
           deployerSnapshotRepo: libs-snapshot-local
           deployerReleaseRepo: libs-staging-local
           inputResources:
-            - name: be_gitRepo
+            - name: {{ .Values.GitRepo.name }}
           integrations:
-            - name: ARTFY_INT
+            - name: {{ .Values.Artifactory }}
           runtime:
             type: image
             image:
@@ -74,7 +75,7 @@ pipelines:
             - name: {{ .Values.Step1.name }}
         execution:
           onStart:
-            - sed -i "s/docker.artifactory/docker.artifactory-unified.soleng-us.jfrog.team/" $res_PetClinicGitRepo_resourcePath/{{ .Values.GitRepo.path }}/Dockerfile
+            # sed -i "s/docker.artifactory/docker.artifactory-unified.soleng-us.jfrog.team/" $res_PetClinicGitRepo_resourcePath/{{ .Values.GitRepo.path }}/Dockerfile
           onComplete:
             - echo $step_env_var2
             - echo "Running $pipeline_name | $step_name on node ID $step_node_id"
