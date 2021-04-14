@@ -54,12 +54,12 @@ pipelines:
           integrations:
             - name: {{ .Values.Artifactory }}
           inputResources:
-            - name: demo_be_gitRepo
+            - name: {{ .Values.Resource1.name }}
               trigger: false
           outputResources:
-            - name: BackendServerDockerImage
+            - name: {{ .Values.Step2.outputResources }}
           inputSteps:
-            - name: bld_backend
+            - name: {{ .Values.Step1.name }}
         execution:
           onComplete:
             - echo $step_env_var2
