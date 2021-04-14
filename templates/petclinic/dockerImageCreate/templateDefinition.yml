@@ -2,7 +2,7 @@ resources:
   - name: demo_be_gitRepo
     type: GitRepo
     configuration:
-      path: colathurv/SwampUp2021 # <-- PREREQ: Fork current github repository to your github organization and mention fullpath of your forked Repository
+      path: colathurv/SwampUp2021
       gitProvider: GITHUB_INT
       files:
          # To ensure that only file changes in this sub-directoty triggers a run
@@ -24,7 +24,7 @@ pipelines:
           sourceLocation: SUV-204-CI-CD-Deep-Dive:JFrog-Pipelines/java-backend
           mvnCommand: clean install -ntp
           resolverSnapshotRepo: libs-snapshot-virtual
-          resolverReleaseRepo: libs-staging-virtual # <-- PREREQ: Create 3 maven repositories: libs-staging-local (type LOCAL), libs-staging-remote (type REMOTE) and libs-staging-virtual(type VIRTUAL). Have libs-staging-virtual aggregate the local and remote, in that order.  
+          resolverReleaseRepo: libs-staging-virtual  
           deployerSnapshotRepo: libs-demo-snapshot-local
           deployerReleaseRepo: libs-demo-release-local
           inputResources:
