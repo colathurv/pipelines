@@ -16,9 +16,9 @@ resources:
       buildNumber: 1
 
 pipelines:
-  - name: swamup2021_demo_template_pipeline
+  - name: {{ .Values.Pipelines.name }}
     steps:
-      - name: bld_backend
+      - name: {{ .Values.Step1.name }}
         type: MvnBuild
         configuration:
           sourceLocation: SUV-204-CI-CD-Deep-Dive:JFrog-Pipelines/java-backend
@@ -43,7 +43,7 @@ pipelines:
             - javac -version
             - mvn --version
 
-      - name: bld_docker_image
+      - name: {{ .Values.Step2.name }}
         type: DockerBuild
         configuration:
           affinityGroup: bldGroup
@@ -65,7 +65,7 @@ pipelines:
             - echo $step_env_var2
             - echo "Running $pipeline_name | $step_name on node ID $step_node_id"
       
-      - name: push_docker_image
+      - name: {{ .Values.Step3.name }}
         type: DockerPush
         configuration:
           affinityGroup: bldGroup
