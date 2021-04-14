@@ -1,18 +1,18 @@
 resources:
-  - name: demo_be_gitRepo
+  - name: {{ .Values.Resource1.name }}
     type: GitRepo
     configuration:
-      path: colathurv/SwampUp2021
-      gitProvider: GITHUB_INT
+      path: {{ .Values.Resource1.path }}
+      gitProvider: {{ .Values.Resource1.gitProvider }}
       files:
          # To ensure that only file changes in this sub-directoty triggers a run
-        include: ^SUV-204-CI-CD-Deep-Dive\:JFrog-Pipelines/java-backend/.*$
+        include: {{ .Values.Resource1.include }}
         
-  - name: demo_be_build_info
+  - name: {{ .Values.Resource2.name }}
     type: BuildInfo
     configuration:
-      sourceArtifactory: ARTFY_INT
-      buildName: backend_build
+      sourceArtifactory: {{ .Values.Artifactory }}
+      buildName: {{ .Values.Resource2.name }}
       buildNumber: 1
 
 pipelines:
@@ -30,7 +30,7 @@ pipelines:
           inputResources:
             - name: demo_be_gitRepo
           integrations:
-            - name: ARTFY_INT
+            - name: {{ .Values.Artifactory }}
           runtime:
             type: image
             image:
@@ -52,7 +52,7 @@ pipelines:
           dockerImageName: vjnpipelines.jfrog.io/docker-template-local/app-backend
           dockerImageTag: '${run_number}'
           integrations:
-            - name: ARTFY_INT
+            - name: {{ .Values.Artifactory }}
           inputResources:
             - name: demo_be_gitRepo
               trigger: false
