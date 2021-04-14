@@ -7,21 +7,21 @@ Resource2 :
 be_gitRepo :
   name : Name for for Github repo
   gitProvider : GitRepo
-  path: 
+  path: colathurv/pipelines-1/templates/petclinic/dockerImageCreate/
   branch : Branch name if any
 Artifactory: ARTFY_INT
 Pipelines:
   name: demo-template-pipeline
 GitRepo:
-  name: GITHUB_RT
+  name: GITHUB_INT
   path: Path to your maven source code
 Step1 :
   name: step1
 Step2 :
-  name: step2Name
+  name: step2
   dockerFileLocation: docfileLocation
   dockerImageName: vjnpipelines.jfrog.io/docker-template-local/app
   outputResourceName: DockerImageBuildInfoName
 Step3 :
-  name: step3Name
+  name: step3
   outputResourceName : DockerImagePublishedBuildInfo
