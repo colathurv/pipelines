@@ -48,7 +48,7 @@ pipelines:
         configuration:
           affinityGroup: {{ .Values.affinityGroup }}           
           dockerFileLocation: {{ .Values.Step2.dockerFileLocation }}
-          dockerFileName: BE-Dockerfile
+          dockerFileName: {{ .Values.Step2.dockerFileName }}
           dockerImageName: {{ .Values.Step2.dockerImageName }}
           dockerImageTag: '${run_number}'
           integrations:
