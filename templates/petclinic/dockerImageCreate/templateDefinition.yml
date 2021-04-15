@@ -21,14 +21,14 @@ pipelines:
       - name: {{ .Values.Step1.name }}
         type: MvnBuild
         configuration:
-          sourceLocation: SUV-204-CI-CD-Deep-Dive:JFrog-Pipelines/java-backend
+          sourceLocation: {{ .Values.Step1.sourceLocation }}
           mvnCommand: clean install -ntp
           resolverSnapshotRepo: libs-snapshot-virtual
           resolverReleaseRepo: libs-staging-virtual  
           deployerSnapshotRepo: libs-demo-snapshot-local
           deployerReleaseRepo: libs-demo-release-local
           inputResources:
-            - name: demo_be_gitRepo
+            - name:  {{ .Values.Resource1.name }}
           integrations:
             - name: {{ .Values.Artifactory }}
           runtime:
@@ -46,10 +46,10 @@ pipelines:
       - name: {{ .Values.Step2.name }}
         type: DockerBuild
         configuration:
-          affinityGroup: bldGroup
-          dockerFileLocation: SUV-204-CI-CD-Deep-Dive:JFrog-Pipelines/docker
+          affinityGroup: {{ .Values.affinityGroup }}           
+          dockerFileLocation: {{ .Values.Step2.dockerFileLocation }}
           dockerFileName: BE-Dockerfile
-          dockerImageName: vjnpipelines.jfrog.io/docker-template-local/app-backend
+          dockerImageName: {{ .Values.Step2.dockerImageName }}
           dockerImageTag: '${run_number}'
           integrations:
             - name: {{ .Values.Artifactory }}
@@ -68,13 +68,13 @@ pipelines:
       - name: {{ .Values.Step3.name }}
         type: DockerPush
         configuration:
-          affinityGroup: bldGroup
+          affinityGroup: {{ .Values.affinityGroup }}
           targetRepository: docker-template-local
           forceXrayScan: false
           autoPublishBuildInfo: true
           integrations:
             - name: GITHUB_INT
           inputSteps:
-            - name: bld_docker_image
+            - name: {{ .Values.Step2.name }}
           outputResources:
             - name: demo_be_build_info
