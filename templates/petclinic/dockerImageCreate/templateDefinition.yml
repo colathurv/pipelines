@@ -11,7 +11,7 @@ resources:
   - name: {{ .Values.Resource2.name }}
     type: BuildInfo
     configuration:
-      sourceArtifactory: {{ .Values.Artifactory }}
+      sourceArtifactory: {{ .Values.ArtifactoryInt }}
       buildName: {{ .Values.Resource2.name }}
       buildNumber: 1
 
@@ -30,7 +30,7 @@ pipelines:
           inputResources:
             - name:  {{ .Values.Resource1.name }}
           integrations:
-            - name: {{ .Values.Artifactory }}
+            - name: {{ .Values.ArtifactoryInt }}
           runtime:
             type: image
             image:
@@ -52,7 +52,7 @@ pipelines:
           dockerImageName: {{ .Values.Step2.dockerImageName }}
           dockerImageTag: '${run_number}'
           integrations:
-            - name: {{ .Values.Artifactory }}
+            - name: {{ .Values.ArtifactoryInt }}
           inputResources:
             - name: {{ .Values.Resource1.name }}
               trigger: false
@@ -73,8 +73,8 @@ pipelines:
           forceXrayScan: false
           autoPublishBuildInfo: true
           integrations:
-            - name: GITHUB_INT
+            - name: {{ .Values.GitHubInt }}
           inputSteps:
             - name: {{ .Values.Step2.name }}
           outputResources:
-            - name: demo_be_build_info
+            - name: {{ .Values.Resource2.name }}
