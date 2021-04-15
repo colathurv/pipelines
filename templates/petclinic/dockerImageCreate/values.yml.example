@@ -1,28 +1,27 @@
 Resource1 :
-  name : Name of your Resource
-  imageName : ImageName
+  name : Name of your GitHub Resource
+  path : Path to GitHub Repo
+  gitProvider : Name of the Git Provider Integration
+  include : Files to be included
 Resource2 :
-  name : Name for your build Info
-  imageName : ImageName
-Resource3 :
-  name : Name for for Github repo
-  gitProvider : Integration name for your github project
-  path: Relative path for your github project (e.g. jfrog/projec)
-  branch : Branch name if any
-Artifactory: Integration Name of Artifactory
+  name : Name for your build Info Resource
+  buildName : Name for your build info
+  sourceArtifactory : Name of the Artifactory Integration
+ArtifactoryInt : Integration Name of Artifactory
+GitProviderInt : Integration Name of Git Provider
+affinityGroup: Name of the Affinity Group
 Pipelines:
-  name: The name for your pipeline
-GitRepo:
-  name: Integration name for your Git repo
-  path: Path to your maven source code
+  name: Name for your pipeline
 Step1 :
-  name: step1Name
+  name: Name of Step1
+  sourceLocation : Path to your Maven Source Code
 Step2 :
-  name: step2Name
-  dockerFileLocation: docfileLocation
-  dockerImageName: NameForYourDockerImage
-  outputResourceName: DockerImageBuildInfoName
+  name: Name of Step2
+  dockerFileLocation: Location of Dockerfile in Source Repo
+  dockerFileName : Name of Dockerfile
+  dockerImageName: Name of your Docker Image
+  outputResourceName: Name of your Output Resource
 Step3 :
-  name: step3Name
+  name: Name of Step3
   outputResourceName : DockerImagePublishedBuildInfo
 
