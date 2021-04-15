@@ -3,7 +3,7 @@ resources:
     type: GitRepo
     configuration:
       path: {{ .Values.Resource1.path }}
-      gitProvider: {{ .Values.Resource1.gitProvider }}
+      gitProvider: {{ .Values.GitProviderInt }}
       files:
          # To ensure that only file changes in this sub-directoty triggers a run
         include: {{ .Values.Resource1.include }}
@@ -73,7 +73,7 @@ pipelines:
           forceXrayScan: false
           autoPublishBuildInfo: true
           integrations:
-            - name: {{ .Values.GitHubInt }}
+            - name: {{ .Values.GitProviderInt }}
           inputSteps:
             - name: {{ .Values.Step2.name }}
           outputResources:
