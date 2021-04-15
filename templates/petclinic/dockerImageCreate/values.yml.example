@@ -1,5 +1,5 @@
 Resource1 :
-  name : Name of your DockerImage
+  name : Name of your Resource
   imageName : ImageName
 Resource2 :
   name : Name for your build Info
